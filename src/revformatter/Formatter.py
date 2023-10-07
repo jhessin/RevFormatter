@@ -5,6 +5,8 @@ generates the appropriate html to render to a web page.
 import mariadb
 import sys
 
+DEBUG = False
+
 class Formatter:
     def __init__(self) -> None:
         try:
@@ -15,11 +17,26 @@ class Formatter:
             sys.exit(1)
 
     def getChapter(self, book: str, chapter: int) -> str:
-        self.cursor.execute(f"""SELECT book from REV.book WHERE title like "{book}" """)
-        bookNum = 1
+        """
+        A basic fetcher for a bible chapter. Give it a book name or
+        abbreviation and it will find it and return that chapter text
+        formatted.
+
+        >>> from Formatter import Formatter
+
+        >>> f = Formatter()
+
+        >>> f.getChapter('ex', 1)
+        """
+        self.cursor.execute(f"""SELECT book from REV.book WHERE aliases like
+                            "%{book}%" """)
+        bookNum = None
         for book in self.cursor:
             bookNum = book[0]
-        print(f'Book Number: {(bookNum)}, chapter: {chapter}')
+        if not bookNum:
+            return 'Book not found!'
+        if DEBUG:
+            print(f'Book: {book}, chapter: {chapter}')
         self.cursor.execute(f"""SELECT heading, microheading, paragraph, style,
                             versetext FROM REV.verse WHERE book="{bookNum}" AND
                             chapter="{chapter}" """)
@@ -32,3 +49,12 @@ class Formatter:
     @property
     def cursor(self):
         return self.__cur
+
+def main():
+    f = Formatter()
+    result = f.getChapter('ex', 1)
+    print(result)
+
+
+if __name__ == "__main__":
+    main()

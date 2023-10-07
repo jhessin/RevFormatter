@@ -14,7 +14,6 @@ source 13_ipcrossref.sql
 source 14_kjv.sql
 source 15_logexcludeips.sql
 source 16_myrevdata.sql
-source 17_myrevusers.sql
 source 18_outline.sql
 source 19_peernotes.sql
 source 20_playlist.sql
@@ -25,7 +24,6 @@ source 24_settings.sql
 source 25_sopssave.sql
 source 26_topic.sql
 source 27_topic_assoc.sql
-source 28_users.sql
 source 29_verse.sql
 source 30_viewlogs.sql
 source 31_wscats.sql
